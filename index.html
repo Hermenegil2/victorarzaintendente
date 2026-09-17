@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Evitar caché del HTML: siempre pedir versión fresca al servidor -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Víctor Arza | Intendente de Curuguaty - Lista 34</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -222,9 +226,9 @@
                         <div class="relative bg-white p-3 sm:p-4 rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
                             <!-- Image Container -->
                             <div class="relative h-[440px] sm:h-[500px] w-full rounded-2xl overflow-hidden bg-slate-100 group">
-                                <img src="img/victorarza.jpg" 
+                                <img data-no-cache data-src="img/victorarza.jpeg" src="img/victorarza.jpeg" 
                                      alt="Víctor Arza Candidato Intendente Curuguaty Lista 34" 
-                                     onerror="this.onerror=null; this.src='https://placehold.co/600x800/007A33/ffffff?text=V%C3%8DCTOR+ARZA+LISTA+34';"
+                                     onerror="this.onerror=null; this.removeAttribute('data-no-cache'); this.src='https://placehold.co/600x800/007A33/ffffff?text=V%C3%8DCTOR+ARZA+LISTA+34';"
                                      class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700">
                                 
                                 <!-- Curved Overlay Banner matching the Campaign Graphic Banner -->
@@ -292,9 +296,9 @@
                 <!-- Candidate Profile Card -->
                 <div class="lg:col-span-5 relative">
                     <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-emerald-500/20">
-                        <img src="img/victorarza.jpg" 
+                        <img data-no-cache data-src="img/victorarza.jpeg" src="img/victorarza.jpeg" 
                              alt="Víctor Arza en reunión con vecinos de Curuguaty" 
-                             onerror="this.onerror=null; this.src='https://placehold.co/600x700/007A33/ffffff?text=Victor+Arza+Intendente';"
+                             onerror="this.onerror=null; this.removeAttribute('data-no-cache'); this.src='https://placehold.co/600x700/007A33/ffffff?text=Victor+Arza+Intendente';"
                              class="w-full h-auto object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-brand-green-dark/90 via-transparent to-transparent flex items-end p-8 text-white">
                             <div>
@@ -778,6 +782,19 @@
     </div>
 
     <script>
+        // Anti-caché de imágenes: aunque el archivo se llame siempre igual
+        // (img/victorarza.jpeg), cada vez que se abre la página se fuerza
+        // al navegador a descargar la versión nueva con ?v=timestamp.
+        function refreshNoCacheImages() {
+            const ts = new Date().getTime();
+            document.querySelectorAll('img[data-no-cache]').forEach(img => {
+                const base = img.getAttribute('data-src') || img.src.split('?')[0];
+                // fetch no-store + reasignar src garantiza que no use caché de disco/memoria
+                img.src = base + '?v=' + ts;
+            });
+        }
+        document.addEventListener('DOMContentLoaded', refreshNoCacheImages);
+
         // Proposal Details Database
         const proposalDetails = {
             'proposal-1': {
